@@ -1,8 +1,3 @@
----
-title: Casts & Validation Rules
-description: Complete guide to using Eloquent casts and validation rules with Cline Intl value objects
----
-
 Cline Intl provides both Eloquent model casts and Laravel validation rules for all internationalization value objects. This page provides a comprehensive guide to using both features together in your Laravel applications.
 
 ## Overview

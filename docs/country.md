@@ -1,8 +1,3 @@
----
-title: Country Value Object
-description: Working with ISO 3166-1 country codes using the Country value object in Cline Intl
----
-
 The `Country` value object provides type-safe handling of ISO 3166-1 country codes with support for both alpha-2 and alpha-3 formats, along with localized country names powered by Symfony Intl.
 
 ## Creating Country Instances

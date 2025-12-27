@@ -1,8 +1,3 @@
----
-title: TimeZone Value Object
-description: Working with timezones using the TimeZone value object in Cline Intl
----
-
 The `TimeZone` value object provides type-safe handling of timezone identifiers with localized names powered by Symfony Intl. It simplifies working with timezones in your Laravel application, especially for user preferences and scheduled tasks.
 
 ## Creating TimeZone Instances

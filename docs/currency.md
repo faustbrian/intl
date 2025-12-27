@@ -1,8 +1,3 @@
----
-title: Currency Value Object
-description: Working with ISO 4217 currency codes using the Currency value object in Cline Intl
----
-
 The `Currency` value object provides type-safe handling of ISO 4217 currency codes, including currency symbols, names, fraction digits, rounding increments, and numeric codes powered by Symfony Intl.
 
 ## Creating Currency Instances

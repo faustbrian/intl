@@ -1,8 +1,3 @@
----
-title: Getting Started
-description: Installation and basic usage of the Cline Intl PHP package for Laravel applications
----
-
 Cline Intl provides type-safe internationalization value objects and validation rules for Laravel applications. Built on top of Symfony Intl components and Spatie Laravel Data, it offers a modern, elegant approach to handling countries, currencies, locales, timezones, phone numbers, postal codes, and addresses.
 
 ## Requirements

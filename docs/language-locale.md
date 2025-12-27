@@ -1,8 +1,3 @@
----
-title: Language & Locale Value Objects
-description: Working with languages and locales using the Language and Locale value objects in Cline Intl
----
-
 The `Language` and `Locale` value objects provide type-safe handling of language codes and locale identifiers, with localized names powered by Symfony Intl. These work together to enable proper internationalization support in your Laravel application.
 
 ## Language Value Object
