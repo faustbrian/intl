@@ -486,4 +486,4 @@ Always validate user input using validation rules to prevent exceptions.
 - [Symfony Intl Languages Component](https://symfony.com/doc/current/components/intl.html)
 - [Symfony Intl Locales Component](https://symfony.com/doc/current/components/intl.html)
 - [ISO 639-1 Language Codes](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
-- [Validation Rules](/intl/casts-and-rules)
+- [Validation Rules](./casts-and-rules.md)

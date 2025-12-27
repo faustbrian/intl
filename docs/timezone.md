@@ -512,4 +512,4 @@ Here are some commonly used timezone identifiers:
 - [IANA Time Zone Database](https://www.iana.org/time-zones)
 - [PHP DateTimeZone](https://www.php.net/manual/en/class.datetimezone.php)
 - [Laravel Carbon Documentation](https://carbon.nesbot.com/docs/)
-- [Validation Rules](/intl/casts-and-rules)
+- [Validation Rules](./casts-and-rules.md)

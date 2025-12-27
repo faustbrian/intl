@@ -680,9 +680,9 @@ $table->string('country', 2);              // Will fail on null
 
 ## Related Resources
 
-- [Country Value Object](/intl/country)
-- [Currency Value Object](/intl/currency)
-- [Language & Locale](/intl/language-locale)
-- [TimeZone Value Object](/intl/timezone)
+- [Country Value Object](./country.md)
+- [Currency Value Object](./currency.md)
+- [Language & Locale](./language-locale.md)
+- [TimeZone Value Object](./timezone.md)
 - [Laravel Validation Documentation](https://laravel.com/docs/validation)
 - [Laravel Eloquent Casting Documentation](https://laravel.com/docs/eloquent-mutators#attribute-casting)

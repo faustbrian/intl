@@ -136,8 +136,8 @@ Cline Intl builds on solid foundation libraries:
 
 Explore the detailed documentation for each value object:
 
-- **[Country](/intl/country)** - ISO 3166-1 country codes with alpha-2 and alpha-3 support
-- **[Currency](/intl/currency)** - ISO 4217 currency codes with symbols and fraction digits
-- **[Language & Locale](/intl/language-locale)** - Language and locale handling
-- **[TimeZone](/intl/timezone)** - Timezone support with localized names
-- **[Casts & Rules](/intl/casts-and-rules)** - Complete guide to model casts and validation rules
+- **[Country](./country.md)** - ISO 3166-1 country codes with alpha-2 and alpha-3 support
+- **[Currency](./currency.md)** - ISO 4217 currency codes with symbols and fraction digits
+- **[Language & Locale](./language-locale.md)** - Language and locale handling
+- **[TimeZone](./timezone.md)** - Timezone support with localized names
+- **[Casts & Rules](./casts-and-rules.md)** - Complete guide to model casts and validation rules

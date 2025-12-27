@@ -429,4 +429,4 @@ echo $money->formatTo('en_US');  // "$19.99"
 
 - [Symfony Intl Currencies Component](https://symfony.com/doc/current/components/intl.html)
 - [ISO 4217 Standard](https://en.wikipedia.org/wiki/ISO_4217)
-- [Validation Rules](/intl/casts-and-rules)
+- [Validation Rules](./casts-and-rules.md)

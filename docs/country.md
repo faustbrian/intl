@@ -303,4 +303,4 @@ Always validate user input using the `CountryRule` to prevent exceptions.
 
 - [Symfony Intl Countries Component](https://symfony.com/doc/current/components/intl.html)
 - [ISO 3166-1 Standard](https://en.wikipedia.org/wiki/ISO_3166-1)
-- [Validation Rules](/intl/casts-and-rules)
+- [Validation Rules](./casts-and-rules.md)
