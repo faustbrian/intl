@@ -31,7 +31,7 @@ describe('TimeZone', function (): void {
             expect($timezone)
                 ->toBeInstanceOf(TimeZone::class)
                 ->and($timezone->value)->toBe('Pacific/Honolulu')
-                ->and($timezone->localized)->toBe('Hawaii-Aleutian Time (Honolulu)');
+                ->and($timezone->localized)->toBe('Hawaii-Aleutian Standard Time (Honolulu)');
         });
 
         test('creates timezone from America/New_York', function (): void {
@@ -314,7 +314,7 @@ describe('TimeZone', function (): void {
                 expect($result)
                     ->toBeInstanceOf(TimeZone::class)
                     ->and($result->value)->toBe('Pacific/Honolulu')
-                    ->and($result->localized)->toBe('Hawaii-Aleutian Time (Honolulu)');
+                    ->and($result->localized)->toBe('Hawaii-Aleutian Standard Time (Honolulu)');
             });
 
             test('cast handles integer by casting to string', function (): void {
