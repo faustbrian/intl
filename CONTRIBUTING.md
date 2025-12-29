@@ -14,7 +14,7 @@ Thank you for your interest in contributing to this project. We value your contr
 1. Fork the repository to your GitHub account
 2. Clone your fork locally:
    ```bash
-   git clone https://github.com/faustbrian/intl.git
+   git clone https://git.cline.sh/faustbrian/intl.git
    cd intl
    ```
 3. Install dependencies:
