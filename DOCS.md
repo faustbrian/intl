@@ -1,11 +1,11 @@
 ## Table of Contents
 
-1. [Overview](#doc-docs-readme) (`docs/README.md`)
-2. [Casts And Rules](#doc-docs-casts-and-rules) (`docs/casts-and-rules.md`)
-3. [Country](#doc-docs-country) (`docs/country.md`)
-4. [Currency](#doc-docs-currency) (`docs/currency.md`)
-5. [Language Locale](#doc-docs-language-locale) (`docs/language-locale.md`)
-6. [Timezone](#doc-docs-timezone) (`docs/timezone.md`)
+1. [Overview](#doc-docs-readme)
+2. [Casts And Rules](#doc-docs-casts-and-rules)
+3. [Country](#doc-docs-country)
+4. [Currency](#doc-docs-currency)
+5. [Language Locale](#doc-docs-language-locale)
+6. [Timezone](#doc-docs-timezone)
 <a id="doc-docs-readme"></a>
 
 Cline Intl provides type-safe internationalization value objects and validation rules for Laravel applications. Built on top of Symfony Intl components and Spatie Laravel Data, it offers a modern, elegant approach to handling countries, currencies, locales, timezones, phone numbers, postal codes, and addresses.
