@@ -51,18 +51,18 @@ final class PhoneNumberRule implements DataAwareRule, ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         try {
-            if ($this->regionCodeReference !== null) {
-                $regionCode = Arr::get($this->data, $this->regionCodeReference);
-            } else {
-                $regionCode = $this->regionCode;
-            }
+            $regionCode = $this->regionCodeReference !== null
+                ? Arr::get($this->data, $this->regionCodeReference)
+                : $this->regionCode;
+
+            $regionCode = is_string($regionCode) && $regionCode !== '' ? $regionCode : null;
 
             if ($this->shouldBeStrict) {
                 /** @phpstan-ignore-next-line cast.string */
-                $isValid = PhoneNumber::createFromString((string) $value, (string) $regionCode)->isValid;
+                $isValid = PhoneNumber::createFromString((string) $value, $regionCode)->isValid;
             } else {
                 /** @phpstan-ignore-next-line cast.string */
-                $isValid = PhoneNumber::createFromString((string) $value, (string) $regionCode)->isPossible;
+                $isValid = PhoneNumber::createFromString((string) $value, $regionCode)->isPossible;
             }
 
             if ($isValid) {

@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
+use Cline\Intl\Data\Cast\LocaleCast;
 use Cline\Intl\ValueObjects\Locale;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
+use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
 describe('Locale', function (): void {
@@ -74,12 +74,11 @@ describe('Locale', function (): void {
 
         test('creates locale via data cast', function (): void {
             // Arrange
-            $cast = Locale::dataCastUsing();
-            $property = Mockery::mock(DataProperty::class);
-            $context = Mockery::mock(CreationContext::class);
+            $cast = new LocaleCast();
+            $property = dummyPropertyMetadata();
 
             // Act
-            $result = $cast->cast($property, 'de_DE', [], $context);
+            $result = $cast->get($property, 'de_DE');
 
             // Assert
             expect($result)->toBeInstanceOf(Locale::class);
@@ -99,12 +98,11 @@ describe('Locale', function (): void {
 
         test('throws exception when casting invalid locale string', function (): void {
             // Arrange
-            $cast = Locale::dataCastUsing();
-            $property = Mockery::mock(DataProperty::class);
-            $context = Mockery::mock(CreationContext::class);
+            $cast = new LocaleCast();
+            $property = dummyPropertyMetadata();
 
             // Act & Assert
-            $cast->cast($property, 'invalid-code', [], $context);
+            $cast->get($property, 'invalid-code');
         })->throws(MissingResourceException::class);
 
         test('identifies non-equal locales correctly', function (): void {
@@ -135,12 +133,11 @@ describe('Locale', function (): void {
 
         test('casts numeric string to locale', function (): void {
             // Arrange
-            $cast = Locale::dataCastUsing();
-            $property = Mockery::mock(DataProperty::class);
-            $context = Mockery::mock(CreationContext::class);
+            $cast = new LocaleCast();
+            $property = dummyPropertyMetadata();
 
             // Act
-            $result = $cast->cast($property, 'en', [], $context);
+            $result = $cast->get($property, 'en');
 
             // Assert
             expect($result)->toBeInstanceOf(Locale::class);

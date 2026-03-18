@@ -15,7 +15,7 @@ describe('TimeZoneCast', function (): void {
     describe('Happy Paths', function (): void {
         test('casts valid timezone string to TimeZone object', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => 'Europe/Helsinki',
             ]);
 
@@ -26,7 +26,7 @@ describe('TimeZoneCast', function (): void {
 
         test('casts valid Asia timezone to TimeZone object', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => 'Asia/Tokyo',
             ]);
 
@@ -37,7 +37,7 @@ describe('TimeZoneCast', function (): void {
 
         test('casts valid America timezone to TimeZone object', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => 'America/New_York',
             ]);
 
@@ -50,7 +50,7 @@ describe('TimeZoneCast', function (): void {
     describe('Sad Paths', function (): void {
         test('returns null for empty string', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => '',
             ]);
 
@@ -60,7 +60,7 @@ describe('TimeZoneCast', function (): void {
 
         test('returns null for string zero', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => '0',
             ]);
 
@@ -70,14 +70,14 @@ describe('TimeZoneCast', function (): void {
 
         test('throws exception for invalid timezone string', function (): void {
             // Arrange & Act & Assert
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'timeZone' => 'Invalid/Timezone',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('throws exception for invalid timezone format', function (): void {
             // Arrange & Act & Assert
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'timeZone' => 'not-a-timezone',
             ]))->toThrow(MissingResourceException::class);
         });
@@ -86,7 +86,7 @@ describe('TimeZoneCast', function (): void {
     describe('Edge Cases', function (): void {
         test('returns null for null value', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => null,
             ]);
 
@@ -96,7 +96,7 @@ describe('TimeZoneCast', function (): void {
 
         test('returns null for integer value', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => 123,
             ]);
 
@@ -106,7 +106,7 @@ describe('TimeZoneCast', function (): void {
 
         test('returns null for float value', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => 123.45,
             ]);
 
@@ -116,7 +116,7 @@ describe('TimeZoneCast', function (): void {
 
         test('returns null for boolean true', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => true,
             ]);
 
@@ -126,7 +126,7 @@ describe('TimeZoneCast', function (): void {
 
         test('returns null for boolean false', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => false,
             ]);
 
@@ -136,7 +136,7 @@ describe('TimeZoneCast', function (): void {
 
         test('returns null for array value', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => ['Europe/Helsinki'],
             ]);
 
@@ -146,7 +146,7 @@ describe('TimeZoneCast', function (): void {
 
         test('returns null for object value', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => (object) ['timezone' => 'Europe/Helsinki'],
             ]);
 
@@ -156,7 +156,7 @@ describe('TimeZoneCast', function (): void {
 
         test('casts timezone string with whitespace correctly', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => 'Europe/Helsinki',
             ]);
 
@@ -167,7 +167,7 @@ describe('TimeZoneCast', function (): void {
 
         test('handles timezone with underscores in name', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => 'America/Port_of_Spain',
             ]);
 
@@ -178,7 +178,7 @@ describe('TimeZoneCast', function (): void {
 
         test('handles timezone with multiple path segments', function (): void {
             // Arrange & Act
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'timeZone' => 'America/Argentina/Buenos_Aires',
             ]);
 

@@ -9,11 +9,11 @@
 
 namespace Tests;
 
+use Cline\Struct\StructServiceProvider;
 use Illuminate\Bus\BusServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Override;
-use Spatie\LaravelData\LaravelDataServiceProvider;
 
 use function realpath;
 
@@ -59,7 +59,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         return [
             BusServiceProvider::class,
-            LaravelDataServiceProvider::class,
+            StructServiceProvider::class,
         ];
     }
 }

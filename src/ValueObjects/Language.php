@@ -9,12 +9,8 @@
 
 namespace Cline\Intl\ValueObjects;
 
+use Cline\Struct\AbstractData;
 use Override;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Casts\Castable;
-use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
 use Stringable;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 use Symfony\Component\Intl\Languages;
@@ -22,7 +18,7 @@ use Symfony\Component\Intl\Languages;
 /**
  * @author Brian Faust <brian@cline.sh>
  */
-final class Language extends Data implements Castable, Stringable
+final readonly class Language extends AbstractData implements Stringable
 {
     public function __construct(
         public readonly string $value,
@@ -44,25 +40,6 @@ final class Language extends Data implements Castable, Stringable
             $value,
             Languages::getName($value),
         );
-    }
-
-    /**
-     * @param array<mixed> $arguments
-     */
-    #[Override()]
-    public static function dataCastUsing(...$arguments): Cast
-    {
-        return new class() implements Cast
-        {
-            /**
-             * @phpstan-ignore-next-line missingType.generics
-             */
-            public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): mixed
-            {
-                /** @phpstan-ignore-next-line cast.string */
-                return Language::createFromString((string) $value);
-            }
-        };
     }
 
     public function isEqualTo(self $other): bool

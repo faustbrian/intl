@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
+use Cline\Intl\Data\Cast\LanguageCast;
 use Cline\Intl\ValueObjects\Language;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
+use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
 it('creates from valid language code string', function (): void {
@@ -75,11 +75,10 @@ describe('Language Value Object', function (): void {
         });
 
         test('casts string value using dataCastUsing', function (): void {
-            $cast = Language::dataCastUsing();
-            $property = mock(DataProperty::class);
-            $context = mock(CreationContext::class);
+            $cast = new LanguageCast();
+            $property = dummyPropertyMetadata();
 
-            $result = $cast->cast($property, 'en', [], $context);
+            $result = $cast->get($property, 'en');
 
             expect($result)->toBeInstanceOf(Language::class)
                 ->and($result->value)->toBe('en')
@@ -136,11 +135,10 @@ describe('Language Value Object', function (): void {
         });
 
         test('casts numeric string value using dataCastUsing', function (): void {
-            $cast = Language::dataCastUsing();
-            $property = mock(DataProperty::class);
-            $context = mock(CreationContext::class);
+            $cast = new LanguageCast();
+            $property = dummyPropertyMetadata();
 
-            expect(fn (): mixed => $cast->cast($property, '999', [], $context))
+            expect(fn (): mixed => $cast->get($property, '999'))
                 ->toThrow(MissingResourceException::class);
         });
 

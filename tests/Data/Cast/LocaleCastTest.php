@@ -15,7 +15,7 @@ describe('LocaleCast', function (): void {
     describe('Happy Paths', function (): void {
         test('casts valid locale code to Locale instance', function (): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => 'fi_FI']);
+            $actual = CastData::create(['localeCode' => 'fi_FI']);
 
             // Assert
             expect($actual->localeCode)
@@ -26,7 +26,7 @@ describe('LocaleCast', function (): void {
 
         test('casts common locale codes correctly', function (string $localeCode, string $expectedLocalized): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => $localeCode]);
+            $actual = CastData::create(['localeCode' => $localeCode]);
 
             // Assert
             expect($actual->localeCode)
@@ -45,7 +45,7 @@ describe('LocaleCast', function (): void {
 
         test('casts language-only locale codes', function (): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => 'en']);
+            $actual = CastData::create(['localeCode' => 'en']);
 
             // Assert
             expect($actual->localeCode)
@@ -57,7 +57,7 @@ describe('LocaleCast', function (): void {
     describe('Sad Paths', function (): void {
         test('returns null when value is empty string', function (): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => '']);
+            $actual = CastData::create(['localeCode' => '']);
 
             // Assert
             expect($actual->localeCode)->toBeNull();
@@ -65,7 +65,7 @@ describe('LocaleCast', function (): void {
 
         test('returns null when value is string zero', function (): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => '0']);
+            $actual = CastData::create(['localeCode' => '0']);
 
             // Assert
             expect($actual->localeCode)->toBeNull();
@@ -73,7 +73,7 @@ describe('LocaleCast', function (): void {
 
         test('returns null when value is null', function (): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => null]);
+            $actual = CastData::create(['localeCode' => null]);
 
             // Assert
             expect($actual->localeCode)->toBeNull();
@@ -81,7 +81,7 @@ describe('LocaleCast', function (): void {
 
         test('returns null when value is integer', function (): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => 123]);
+            $actual = CastData::create(['localeCode' => 123]);
 
             // Assert
             expect($actual->localeCode)->toBeNull();
@@ -89,7 +89,7 @@ describe('LocaleCast', function (): void {
 
         test('returns null when value is boolean', function (): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => false]);
+            $actual = CastData::create(['localeCode' => false]);
 
             // Assert
             expect($actual->localeCode)->toBeNull();
@@ -97,7 +97,7 @@ describe('LocaleCast', function (): void {
 
         test('returns null when value is array', function (): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => ['en_US']]);
+            $actual = CastData::create(['localeCode' => ['en_US']]);
 
             // Assert
             expect($actual->localeCode)->toBeNull();
@@ -107,25 +107,25 @@ describe('LocaleCast', function (): void {
     describe('Edge Cases', function (): void {
         test('throws exception for invalid locale code format', function (): void {
             // Arrange & Act & Assert
-            expect(fn (): CastData => CastData::from(['localeCode' => 'invalid_locale_code']))
+            expect(fn (): CastData => CastData::create(['localeCode' => 'invalid_locale_code']))
                 ->toThrow(MissingResourceException::class);
         });
 
         test('throws exception for non-existent locale', function (): void {
             // Arrange & Act & Assert
-            expect(fn (): CastData => CastData::from(['localeCode' => 'xx_XX']))
+            expect(fn (): CastData => CastData::create(['localeCode' => 'xx_XX']))
                 ->toThrow(MissingResourceException::class);
         });
 
         test('throws exception for malformed locale string', function (): void {
             // Arrange & Act & Assert
-            expect(fn (): CastData => CastData::from(['localeCode' => 'en_US_EXTRA']))
+            expect(fn (): CastData => CastData::create(['localeCode' => 'en_US_EXTRA']))
                 ->toThrow(MissingResourceException::class);
         });
 
         test('handles locale with script code', function (): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => 'zh_Hans_CN']);
+            $actual = CastData::create(['localeCode' => 'zh_Hans_CN']);
 
             // Assert
             expect($actual->localeCode)
@@ -135,7 +135,7 @@ describe('LocaleCast', function (): void {
 
         test('handles special characters in valid locale codes', function (): void {
             // Arrange & Act
-            $actual = CastData::from(['localeCode' => 'sr_Cyrl_RS']);
+            $actual = CastData::create(['localeCode' => 'sr_Cyrl_RS']);
 
             // Assert
             expect($actual->localeCode)

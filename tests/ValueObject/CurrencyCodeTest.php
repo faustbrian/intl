@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
+use Cline\Intl\Data\Cast\CurrencyCodeCast;
 use Cline\Intl\ValueObjects\CurrencyCode;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
+use Cline\Struct\Contracts\CastInterface;
+use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
 describe('CurrencyCode', function (): void {
@@ -170,17 +170,16 @@ describe('CurrencyCode', function (): void {
     describe('dataCastUsing method', function (): void {
         describe('Happy Paths', function (): void {
             test('returns Cast instance', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
+                $cast = new CurrencyCodeCast();
 
-                expect($cast)->toBeInstanceOf(Cast::class);
+                expect($cast)->toBeInstanceOf(CastInterface::class);
             });
 
             test('cast converts valid currency code string to CurrencyCode', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                $result = $cast->cast($property, 'USD', [], $context);
+                $result = $cast->get($property, 'USD');
 
                 expect($result)
                     ->toBeInstanceOf(CurrencyCode::class)
@@ -189,11 +188,10 @@ describe('CurrencyCode', function (): void {
             });
 
             test('cast converts EUR currency code', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                $result = $cast->cast($property, 'EUR', [], $context);
+                $result = $cast->get($property, 'EUR');
 
                 expect($result)
                     ->toBeInstanceOf(CurrencyCode::class)
@@ -202,11 +200,10 @@ describe('CurrencyCode', function (): void {
             });
 
             test('cast converts GBP currency code', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                $result = $cast->cast($property, 'GBP', [], $context);
+                $result = $cast->get($property, 'GBP');
 
                 expect($result)
                     ->toBeInstanceOf(CurrencyCode::class)
@@ -214,102 +211,89 @@ describe('CurrencyCode', function (): void {
             });
 
             test('cast converts integer to string before processing', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, 978, [], $context))
-                    ->toThrow(MissingResourceException::class);
+                expect($cast->get($property, 978))->toBeNull();
             });
         });
 
         describe('Sad Paths', function (): void {
             test('cast throws exception for invalid currency code', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                $cast->cast($property, 'INVALID', [], $context);
+                $cast->get($property, 'INVALID');
             })->throws(MissingResourceException::class);
 
             test('cast throws exception for non-existent code', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                $cast->cast($property, 'ZZZ', [], $context);
+                $cast->get($property, 'ZZZ');
             })->throws(MissingResourceException::class);
 
             test('cast throws exception for lowercase currency code', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                $cast->cast($property, 'usd', [], $context);
+                $cast->get($property, 'usd');
             })->throws(MissingResourceException::class);
         });
 
         describe('Edge Cases', function (): void {
             test('cast handles numeric string', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, '123', [], $context))
+                expect(fn (): mixed => $cast->get($property, '123'))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles empty string', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, '', [], $context))
-                    ->toThrow(MissingResourceException::class);
+                expect($cast->get($property, ''))->toBeNull();
             });
 
             test('cast handles whitespace-only string', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, '   ', [], $context))
+                expect(fn (): mixed => $cast->get($property, '   '))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles currency code with leading whitespace', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, ' EUR', [], $context))
+                expect(fn (): mixed => $cast->get($property, ' EUR'))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles currency code with trailing whitespace', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, 'EUR ', [], $context))
+                expect(fn (): mixed => $cast->get($property, 'EUR '))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles special characters', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, '$$$', [], $context))
+                expect(fn (): mixed => $cast->get($property, '$$$'))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles very long string', function (): void {
-                $cast = CurrencyCode::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new CurrencyCodeCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, str_repeat('A', 100), [], $context))
+                expect(fn (): mixed => $cast->get($property, str_repeat('A', 100)))
                     ->toThrow(MissingResourceException::class);
             });
         });

@@ -10,8 +10,8 @@
 namespace Cline\Intl\ValueObjects;
 
 use Cline\Intl\Enums\CountryCode;
-use Spatie\LaravelData\Attributes\Validation\RequiredIf;
-use Spatie\LaravelData\Data;
+use Cline\Struct\AbstractData;
+use Cline\Struct\Attributes\Validate;
 
 /**
  * Field names are based to the OASIS "eXtensible Address Language" (xAL)
@@ -25,7 +25,7 @@ use Spatie\LaravelData\Data;
  * @see https://en.wikipedia.org/wiki/VCard
  * @see http://www.oasis-open.org/committees/ciq/download.shtml
  */
-final class Address extends Data
+final readonly class Address extends AbstractData
 {
     /**
      * These properties are ordered from general to specific. This order starts
@@ -87,9 +87,9 @@ final class Address extends Data
         public readonly ?string $organization,
         public readonly ?string $locale,
         public readonly ?string $phoneNumber,
-        #[RequiredIf('longitude')]
+        #[Validate('required_if:longitude')]
         public readonly ?float $latitude,
-        #[RequiredIf('latitude')]
+        #[Validate('required_if:latitude')]
         public readonly ?float $longitude,
     ) {}
 

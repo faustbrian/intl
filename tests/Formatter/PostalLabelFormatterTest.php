@@ -46,7 +46,7 @@ dataset('sender_recipient_country_codes', fn (): array => [
 it('can format finnish address', function (string $senderCountryCode, string $recipientCountryCode): void {
     expect(
         PostalLabelFormatter::format(
-            Address::from([
+            Address::create([
                 'countryCode' => CountryCode::from($senderCountryCode),
                 'administrativeArea' => 'administrativeArea',
                 'locality' => 'locality',
@@ -63,7 +63,7 @@ it('can format finnish address', function (string $senderCountryCode, string $re
                 'familyName' => 'familyName',
                 'locale' => 'locale',
             ]),
-            Address::from([
+            Address::create([
                 'countryCode' => CountryCode::from($recipientCountryCode),
                 'administrativeArea' => 'administrativeArea',
                 'locality' => 'locality',

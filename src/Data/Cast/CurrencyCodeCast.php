@@ -9,9 +9,9 @@
 
 namespace Cline\Intl\Data\Cast;
 
+use Cline\Intl\ValueObjects\CurrencyCode;
 use Cline\Struct\Contracts\CastInterface;
 use Cline\Struct\Metadata\PropertyMetadata;
-use Cline\Intl\ValueObjects\Language;
 use Stringable;
 
 use function is_string;
@@ -19,11 +19,11 @@ use function is_string;
 /**
  * @author Brian Faust <brian@cline.sh>
  */
-final class LanguageCast implements CastInterface
+final class CurrencyCodeCast implements CastInterface
 {
-    public function get(PropertyMetadata $property, mixed $value): ?Language
+    public function get(PropertyMetadata $property, mixed $value): ?CurrencyCode
     {
-        if ($value instanceof Language) {
+        if ($value instanceof CurrencyCode) {
             return $value;
         }
 
@@ -35,7 +35,7 @@ final class LanguageCast implements CastInterface
             return null;
         }
 
-        return Language::createFromString($value);
+        return CurrencyCode::createFromString($value);
     }
 
     public function set(PropertyMetadata $property, mixed $value): mixed

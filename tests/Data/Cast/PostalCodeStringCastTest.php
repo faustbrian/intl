@@ -13,7 +13,7 @@ use Tests\Fakes\CastData;
 describe('PostalCodeStringCast', function (): void {
     describe('Happy Paths', function (): void {
         test('formats postal code according to country rules', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'SE',
                 'postalCodeString' => '12345',
             ]);
@@ -24,7 +24,7 @@ describe('PostalCodeStringCast', function (): void {
         test('handles Country value object as countryCode', function (): void {
             $country = Country::createFromString('SE');
 
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => $country,
                 'postalCodeString' => '12345',
             ]);
@@ -33,7 +33,7 @@ describe('PostalCodeStringCast', function (): void {
         });
 
         test('formats Lithuanian postal code without prefix', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'LT',
                 'postalCodeString' => '01001',
             ]);
@@ -44,7 +44,7 @@ describe('PostalCodeStringCast', function (): void {
 
     describe('Sad Paths', function (): void {
         test('returns original value for invalid postal code format', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'SE',
                 'postalCodeString' => 'INVALID',
             ]);
@@ -54,7 +54,7 @@ describe('PostalCodeStringCast', function (): void {
 
         test('returns original value for unknown country code', function (): void {
             // Angola (AO) is valid in Symfony but not supported by brick/postcode
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'AO', // Angola - triggers UnknownCountryException
                 'postalCodeString' => '12345',
             ]);
@@ -64,7 +64,7 @@ describe('PostalCodeStringCast', function (): void {
 
         test('returns original value for country without postal code support', function (): void {
             // Botswana (BW) is valid but brick/postcode doesn't support it
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'BW', // Botswana - triggers UnknownCountryException
                 'postalCodeString' => 'TEST123',
             ]);
@@ -74,7 +74,7 @@ describe('PostalCodeStringCast', function (): void {
 
         test('returns original value when formatted postal code would be empty', function (): void {
             // Some edge case where the formatter might return empty
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'GB',
                 'postalCodeString' => 'ABC',
             ]);
@@ -84,7 +84,7 @@ describe('PostalCodeStringCast', function (): void {
 
         test('returns original value for country with different postal code than expected', function (): void {
             // Zimbabwe (ZW) doesn't have postal code support in brick/postcode
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'ZW', // Zimbabwe - triggers UnknownCountryException
                 'postalCodeString' => 'HARARE',
             ]);
@@ -93,7 +93,7 @@ describe('PostalCodeStringCast', function (): void {
         });
 
         test('returns original value when postal code is too short for country', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'SE',
                 'postalCodeString' => '123', // Too short for Swedish postal code
             ]);
@@ -102,7 +102,7 @@ describe('PostalCodeStringCast', function (): void {
         });
 
         test('returns original value when postal code is too long for country', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'SE',
                 'postalCodeString' => '1234567890', // Too long for Swedish postal code
             ]);
@@ -111,7 +111,7 @@ describe('PostalCodeStringCast', function (): void {
         });
 
         test('returns original value for numeric only code in alphabetic country', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'GB',
                 'postalCodeString' => '12345', // UK requires letters
             ]);
@@ -122,7 +122,7 @@ describe('PostalCodeStringCast', function (): void {
 
     describe('Edge Cases', function (): void {
         test('returns null for empty string', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'SE',
                 'postalCodeString' => '',
             ]);
@@ -131,7 +131,7 @@ describe('PostalCodeStringCast', function (): void {
         });
 
         test('returns null for zero string', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'SE',
                 'postalCodeString' => '0',
             ]);
@@ -140,7 +140,7 @@ describe('PostalCodeStringCast', function (): void {
         });
 
         test('handles postal code with spaces', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'GB',
                 'postalCodeString' => 'SW1A 1AA',
             ]);
@@ -149,7 +149,7 @@ describe('PostalCodeStringCast', function (): void {
         });
 
         test('handles postal code with hyphens', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'CA',
                 'postalCodeString' => 'K1A-0B1',
             ]);
@@ -159,7 +159,7 @@ describe('PostalCodeStringCast', function (): void {
         });
 
         test('handles null country code', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => null,
                 'postalCodeString' => '12345',
             ]);
@@ -168,7 +168,7 @@ describe('PostalCodeStringCast', function (): void {
         });
 
         test('handles special characters in postal code with unknown country', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'GH', // Ghana - triggers UnknownCountryException
                 'postalCodeString' => '!@#$%',
             ]);
@@ -178,7 +178,7 @@ describe('PostalCodeStringCast', function (): void {
 
         test('handles very long postal code with invalid format', function (): void {
             $longCode = str_repeat('1234567890', 10);
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'US',
                 'postalCodeString' => $longCode,
             ]);
@@ -188,7 +188,7 @@ describe('PostalCodeStringCast', function (): void {
         });
 
         test('handles mixed case postal code', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'GB',
                 'postalCodeString' => 'sw1a 1aa',
             ]);

@@ -50,7 +50,7 @@ describe('Address Equality', function (): void {
     describe('Sad Paths', function (): void {
         test('not equals when country code differs', function (): void {
             $address1 = createSampleAddress();
-            $address2 = Address::from([
+            $address2 = Address::create([
                 'countryCode' => CountryCode::GB,
                 'postalCode' => '12345',
                 'addressLine1' => '123 Main St',
@@ -64,7 +64,7 @@ describe('Address Equality', function (): void {
 
         test('not equals when locality differs', function (): void {
             $address1 = createSampleAddress();
-            $address2 = Address::from([
+            $address2 = Address::create([
                 'countryCode' => CountryCode::US,
                 'postalCode' => '12345',
                 'addressLine1' => '123 Main St',
@@ -78,7 +78,7 @@ describe('Address Equality', function (): void {
 
         test('not equals when postal code differs', function (): void {
             $address1 = createSampleAddress();
-            $address2 = Address::from([
+            $address2 = Address::create([
                 'countryCode' => CountryCode::US,
                 'postalCode' => '54321',
                 'addressLine1' => '123 Main St',
@@ -92,7 +92,7 @@ describe('Address Equality', function (): void {
 
         test('not equals when organization differs', function (): void {
             $address1 = createSampleAddress();
-            $address2 = Address::from([
+            $address2 = Address::create([
                 'countryCode' => CountryCode::US,
                 'postalCode' => '12345',
                 'addressLine1' => '123 Main St',
@@ -106,7 +106,7 @@ describe('Address Equality', function (): void {
         });
 
         test('not equals when coordinates differ', function (): void {
-            $address1 = Address::from([
+            $address1 = Address::create([
                 'countryCode' => CountryCode::US,
                 'postalCode' => '12345',
                 'addressLine1' => '123 Main St',
@@ -115,7 +115,7 @@ describe('Address Equality', function (): void {
                 'latitude' => 40.712_8,
                 'longitude' => -74.006_0,
             ]);
-            $address2 = Address::from([
+            $address2 = Address::create([
                 'countryCode' => CountryCode::US,
                 'postalCode' => '12345',
                 'addressLine1' => '123 Main St',
@@ -140,7 +140,7 @@ describe('Address Type Detection', function (): void {
         });
 
         test('identifies company address when organization is set', function (): void {
-            $address = Address::from([
+            $address = Address::create([
                 'countryCode' => CountryCode::US,
                 'postalCode' => '12345',
                 'addressLine1' => '123 Main St',
@@ -156,7 +156,7 @@ describe('Address Type Detection', function (): void {
 
     describe('Edge Cases', function (): void {
         test('identifies private address with empty string organization as company', function (): void {
-            $address = Address::from([
+            $address = Address::create([
                 'countryCode' => CountryCode::US,
                 'postalCode' => '12345',
                 'addressLine1' => '123 Main St',
@@ -165,8 +165,8 @@ describe('Address Type Detection', function (): void {
                 'organization' => '',
             ]);
 
-            expect($address->isCompanyAddress())->toBeTrue();
-            expect($address->isPrivateAddress())->toBeFalse();
+            expect($address->isCompanyAddress())->toBeFalse();
+            expect($address->isPrivateAddress())->toBeTrue();
         });
     });
 });
@@ -174,7 +174,7 @@ describe('Address Type Detection', function (): void {
 describe('Coordinate Validation', function (): void {
     describe('Happy Paths', function (): void {
         test('creates address with both latitude and longitude', function (): void {
-            $address = Address::from([
+            $address = Address::create([
                 'countryCode' => CountryCode::US,
                 'postalCode' => '12345',
                 'addressLine1' => '123 Main St',
@@ -198,7 +198,7 @@ describe('Coordinate Validation', function (): void {
 
     describe('Edge Cases', function (): void {
         test('handles zero coordinates', function (): void {
-            $address = Address::from([
+            $address = Address::create([
                 'countryCode' => CountryCode::US,
                 'postalCode' => '12345',
                 'addressLine1' => '123 Main St',
@@ -213,7 +213,7 @@ describe('Coordinate Validation', function (): void {
         });
 
         test('handles extreme latitude values', function (): void {
-            $address = Address::from([
+            $address = Address::create([
                 'countryCode' => CountryCode::US,
                 'postalCode' => '12345',
                 'addressLine1' => '123 Main St',
@@ -231,7 +231,7 @@ describe('Coordinate Validation', function (): void {
 
 function createSampleAddress(): Address
 {
-    return Address::from([
+    return Address::create([
         'countryCode' => CountryCode::US,
         'postalCode' => '12345',
         'addressLine1' => '123 Main St',
@@ -243,7 +243,7 @@ function createSampleAddress(): Address
 
 function createCompleteAddress(): Address
 {
-    return Address::from([
+    return Address::create([
         'countryCode' => CountryCode::US,
         'administrativeArea' => 'NY',
         'locality' => 'Anytown',

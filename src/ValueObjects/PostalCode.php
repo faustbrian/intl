@@ -12,18 +12,14 @@ namespace Cline\Intl\ValueObjects;
 use Brick\Postcode\InvalidPostcodeException;
 use Brick\Postcode\PostcodeFormatter;
 use Brick\Postcode\UnknownCountryException;
+use Cline\Struct\AbstractData;
 use Override;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Casts\Castable;
-use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
 use Stringable;
 
 /**
  * @author Brian Faust <brian@cline.sh>
  */
-final class PostalCode extends Data implements Castable, Stringable
+final readonly class PostalCode extends AbstractData implements Stringable
 {
     public function __construct(
         public readonly string $postalCode,
@@ -48,25 +44,6 @@ final class PostalCode extends Data implements Castable, Stringable
         return new self(
             new PostcodeFormatter()->format($countryCode, $postalCode),
         );
-    }
-
-    /**
-     * @param array<mixed> $arguments
-     */
-    #[Override()]
-    public static function dataCastUsing(...$arguments): Cast
-    {
-        return new class() implements Cast
-        {
-            /**
-             * @phpstan-ignore-next-line missingType.generics
-             */
-            public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): mixed
-            {
-                /** @phpstan-ignore-next-line cast.string */
-                return PostalCode::createFromString((string) $value, null);
-            }
-        };
     }
 
     public function isEqualTo(self $other): bool

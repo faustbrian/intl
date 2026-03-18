@@ -11,10 +11,10 @@ use Brick\PhoneNumber\PhoneNumberException;
 use Brick\PhoneNumber\PhoneNumberFormat;
 use Brick\PhoneNumber\PhoneNumberParseException;
 use Brick\PhoneNumber\PhoneNumberType;
+use Cline\Intl\Data\Cast\PhoneNumberCast;
 use Cline\Intl\ValueObjects\PhoneNumber;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
+use Cline\Struct\Contracts\CastInterface;
+use Cline\Struct\Metadata\PropertyMetadata;
 
 it('creates from valid phone number', function (): void {
     $validPhoneNumber = '+35810800515';
@@ -204,17 +204,16 @@ describe('PhoneNumber', function (): void {
         });
 
         test('casts string to phone number via dataCastUsing', function (): void {
-            $cast = PhoneNumber::dataCastUsing();
+            $cast = new PhoneNumberCast();
 
-            expect($cast)->toBeInstanceOf(Cast::class);
+            expect($cast)->toBeInstanceOf(CastInterface::class);
         });
 
         test('cast implementation converts string to phone number', function (): void {
-            $cast = PhoneNumber::dataCastUsing();
-            $property = Mockery::mock(DataProperty::class);
-            $context = Mockery::mock(CreationContext::class);
+            $cast = new PhoneNumberCast();
+            $property = dummyPropertyMetadata();
 
-            $result = $cast->cast($property, '+35810800515', [], $context);
+            $result = $cast->get($property, '+35810800515');
 
             expect($result)->toBeInstanceOf(PhoneNumber::class);
             expect($result->toString())->toBe('+35810800515');

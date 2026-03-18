@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
+use Cline\Intl\Data\Cast\CountryCast;
 use Cline\Intl\ValueObjects\Country;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
+use Cline\Struct\Contracts\CastInterface;
+use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
 describe('Country', function (): void {
@@ -256,21 +256,20 @@ describe('Country', function (): void {
     describe('Data Casting', function (): void {
         test('dataCastUsing returns Cast instance', function (): void {
             // Arrange & Act
-            $cast = Country::dataCastUsing();
+            $cast = new CountryCast();
 
             // Assert
-            expect($cast)->toBeInstanceOf(Cast::class);
+            expect($cast)->toBeInstanceOf(CastInterface::class);
         });
 
         test('Cast instance can cast string to Country', function (): void {
             // Arrange
-            $cast = Country::dataCastUsing();
-            $property = Mockery::mock(DataProperty::class);
-            $context = Mockery::mock(CreationContext::class);
+            $cast = new CountryCast();
+            $property = dummyPropertyMetadata();
             $value = 'FR';
 
             // Act
-            $result = $cast->cast($property, $value, [], $context);
+            $result = $cast->get($property, $value);
 
             // Assert
             expect($result)->toBeInstanceOf(Country::class);
@@ -280,21 +279,18 @@ describe('Country', function (): void {
 
         test('Cast instance handles numeric string conversion', function (): void {
             // Arrange
-            $cast = Country::dataCastUsing();
-            $property = Mockery::mock(DataProperty::class);
-            $context = Mockery::mock(CreationContext::class);
+            $cast = new CountryCast();
+            $property = dummyPropertyMetadata();
             $value = 123;
 
             // Act & Assert
-            expect(fn (): mixed => $cast->cast($property, $value, [], $context))
-                ->toThrow(MissingResourceException::class);
+            expect($cast->get($property, $value))->toBeNull();
         });
 
         test('Cast implementation casts value to string before processing', function (): void {
             // Arrange
-            $cast = Country::dataCastUsing();
-            $property = Mockery::mock(DataProperty::class);
-            $context = Mockery::mock(CreationContext::class);
+            $cast = new CountryCast();
+            $property = dummyPropertyMetadata();
             $stringable = new class() implements Stringable
             {
                 public function __toString(): string
@@ -304,7 +300,7 @@ describe('Country', function (): void {
             };
 
             // Act
-            $result = $cast->cast($property, $stringable, [], $context);
+            $result = $cast->get($property, $stringable);
 
             // Assert
             expect($result)->toBeInstanceOf(Country::class);

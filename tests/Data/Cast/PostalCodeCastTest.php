@@ -14,7 +14,7 @@ use Tests\Fakes\CastData;
 describe('PostalCodeCast', function (): void {
     describe('Happy Paths', function (): void {
         test('casts valid postal code with string country code', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'FI',
                 'postalCode' => '00100',
             ]);
@@ -24,7 +24,7 @@ describe('PostalCodeCast', function (): void {
         });
 
         test('casts valid postal code with Country object as country code', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => Country::createFromString('SE'),
                 'postalCode' => '12345',
             ]);
@@ -34,7 +34,7 @@ describe('PostalCodeCast', function (): void {
         });
 
         test('formats postal code according to country rules', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'LT',
                 'postalCode' => 'LT-12345',
             ]);
@@ -46,7 +46,7 @@ describe('PostalCodeCast', function (): void {
 
     describe('Sad Paths', function (): void {
         test('returns null when value is not a string', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'FI',
                 'postalCode' => 12_345, // integer instead of string
             ]);
@@ -55,7 +55,7 @@ describe('PostalCodeCast', function (): void {
         });
 
         test('returns null when postal code is empty string', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'FI',
                 'postalCode' => '',
             ]);
@@ -64,7 +64,7 @@ describe('PostalCodeCast', function (): void {
         });
 
         test('returns null when postal code is string zero', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'FI',
                 'postalCode' => '0',
             ]);
@@ -73,7 +73,7 @@ describe('PostalCodeCast', function (): void {
         });
 
         test('returns null when postal code is invalid for country', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'FI',
                 'postalCode' => 'INVALID', // Invalid Finnish postal code
             ]);
@@ -84,7 +84,7 @@ describe('PostalCodeCast', function (): void {
         test('returns null when country code is unknown to brick postcode', function (): void {
             // Use a valid country code that exists in Symfony Intl but not in Brick Postcode
             // ZZ is reserved for user-defined territories but not in postal code validation
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'AQ', // Antarctica - valid country but no postal code system
                 'postalCode' => '12345',
             ]);
@@ -102,7 +102,7 @@ describe('PostalCodeCast', function (): void {
             ];
 
             foreach ($testCases as $testCase) {
-                $actual = CastData::from($testCase);
+                $actual = CastData::create($testCase);
                 expect($actual->postalCode)->toBeNull();
             }
         });
@@ -110,7 +110,7 @@ describe('PostalCodeCast', function (): void {
         test('returns null when country code is null and postal code is invalid', function (): void {
             // When country code is null, the postal code is not validated/formatted
             // but we should still return null if the postal code can't be created
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => null,
                 'postalCode' => 'test',
             ]);
@@ -124,7 +124,7 @@ describe('PostalCodeCast', function (): void {
 
     describe('Edge Cases', function (): void {
         test('handles null value gracefully', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'FI',
                 'postalCode' => null,
             ]);
@@ -133,7 +133,7 @@ describe('PostalCodeCast', function (): void {
         });
 
         test('handles array value gracefully', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'FI',
                 'postalCode' => ['12345'],
             ]);
@@ -142,7 +142,7 @@ describe('PostalCodeCast', function (): void {
         });
 
         test('handles boolean false value', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'FI',
                 'postalCode' => false,
             ]);
@@ -151,7 +151,7 @@ describe('PostalCodeCast', function (): void {
         });
 
         test('handles postal code with whitespace', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'US',
                 'postalCode' => '90210',
             ]);
@@ -161,7 +161,7 @@ describe('PostalCodeCast', function (): void {
         });
 
         test('handles postal codes with special characters for supported countries', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'GB',
                 'postalCode' => 'SW1A1AA',
             ]);
@@ -179,7 +179,7 @@ describe('PostalCodeCast', function (): void {
             ];
 
             foreach ($unsupportedCountries as $countryCode) {
-                $actual = CastData::from([
+                $actual = CastData::create([
                     'countryCode' => $countryCode,
                     'postalCode' => '12345',
                 ]);
@@ -191,7 +191,7 @@ describe('PostalCodeCast', function (): void {
         test('handles Country object with unknown country code', function (): void {
             // Create a Country object and pass it directly
             // This tests the path where countryCode is a Country instance
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => 'BV', // Bouvet Island - triggers UnknownCountryException
                 'postalCode' => 'ABC123',
             ]);
@@ -208,7 +208,7 @@ describe('PostalCodeCast', function (): void {
             ];
 
             foreach ($invalidFormats as $testCase) {
-                $actual = CastData::from($testCase);
+                $actual = CastData::create($testCase);
                 expect($actual->postalCode)->toBeNull();
             }
         });
@@ -217,7 +217,7 @@ describe('PostalCodeCast', function (): void {
             // Pass a Country object that will result in an unknown country exception
             $country = Country::createFromString('AQ'); // Antarctica
 
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'countryCode' => $country,
                 'postalCode' => 'TEST123',
             ]);

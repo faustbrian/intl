@@ -11,12 +11,11 @@ namespace Cline\Intl\Data\Cast;
 
 use Brick\Postcode\InvalidPostcodeException;
 use Brick\Postcode\UnknownCountryException;
+use Cline\Struct\Contracts\ContextualCastInterface;
+use Cline\Struct\Metadata\PropertyMetadata;
+use Cline\Struct\Support\PropertyHydrationContext;
 use Cline\Intl\ValueObjects\Country;
 use Cline\Intl\ValueObjects\PostalCode;
-use Override;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
 
 use function is_string;
 use function throw_if;
@@ -24,8 +23,26 @@ use function throw_if;
 /**
  * @author Brian Faust <brian@cline.sh>
  */
-final class PostalCodeStringCast implements Cast
+final class PostalCodeStringCast implements ContextualCastInterface
 {
+    public function get(PropertyMetadata $property, mixed $value): ?string
+    {
+        return $this->castValue($value, []);
+    }
+
+    public function getWithContext(
+        PropertyMetadata $property,
+        mixed $value,
+        PropertyHydrationContext $context,
+    ): ?string {
+        return $this->castValue($value, $context->resolvedProperties + $context->rawInput);
+    }
+
+    public function set(PropertyMetadata $property, mixed $value): mixed
+    {
+        return $value;
+    }
+
     /**
      * This will format the postal code according to the rules of the country
      * code. For example, for the country code 'LT' the postal code 'LT-12345'
@@ -33,16 +50,15 @@ final class PostalCodeStringCast implements Cast
      * '12345' will be formatted to '123 45' and so on. If the postal code is
      * not valid for the country code, the original value will be returned.
      *
-     * @phpstan-ignore-next-line missingType.generics (Cast returns string, not BaseData)
+     * @param array<string, mixed> $properties
      */
-    #[Override()]
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?string
+    private function castValue(mixed $value, array $properties): ?string
     {
         if (!is_string($value) || ($value === '' || $value === '0')) {
             return null;
         }
 
-        $countryCode = $properties['countryCode'];
+        $countryCode = $properties['countryCode'] ?? null;
 
         if ($countryCode instanceof Country) {
             $countryCode = $countryCode->toString();

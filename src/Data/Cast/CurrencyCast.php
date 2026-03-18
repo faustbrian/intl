@@ -9,29 +9,37 @@
 
 namespace Cline\Intl\Data\Cast;
 
+use Cline\Struct\Contracts\CastInterface;
+use Cline\Struct\Metadata\PropertyMetadata;
 use Cline\Intl\ValueObjects\Currency;
-use Override;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
+use Stringable;
 
 use function is_string;
 
 /**
  * @author Brian Faust <brian@cline.sh>
  */
-final class CurrencyCast implements Cast
+final class CurrencyCast implements CastInterface
 {
-    /**
-     * @param CreationContext<Currency> $context
-     */
-    #[Override()]
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?Currency
+    public function get(PropertyMetadata $property, mixed $value): ?Currency
     {
+        if ($value instanceof Currency) {
+            return $value;
+        }
+
+        if ($value instanceof Stringable) {
+            $value = $value->__toString();
+        }
+
         if (!is_string($value) || ($value === '' || $value === '0')) {
             return null;
         }
 
         return Currency::createFromString($value);
+    }
+
+    public function set(PropertyMetadata $property, mixed $value): mixed
+    {
+        return $value;
     }
 }

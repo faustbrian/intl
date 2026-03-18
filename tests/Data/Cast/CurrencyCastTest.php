@@ -14,7 +14,7 @@ use Tests\Fakes\CastData;
 describe('CurrencyCast', function (): void {
     describe('Happy Paths', function (): void {
         test('casts valid currency code to Currency object', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'currencyCode' => 'EUR',
             ]);
 
@@ -24,7 +24,7 @@ describe('CurrencyCast', function (): void {
         });
 
         test('casts USD currency code', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'currencyCode' => 'USD',
             ]);
 
@@ -34,7 +34,7 @@ describe('CurrencyCast', function (): void {
         });
 
         test('casts GBP currency code', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'currencyCode' => 'GBP',
             ]);
 
@@ -46,13 +46,13 @@ describe('CurrencyCast', function (): void {
 
     describe('Sad Paths', function (): void {
         test('returns null for invalid currency code', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'currencyCode' => 'INVALID',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('returns null for non-string value - integer', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'currencyCode' => 123,
             ]);
 
@@ -60,7 +60,7 @@ describe('CurrencyCast', function (): void {
         });
 
         test('returns null for non-string value - array', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'currencyCode' => ['EUR'],
             ]);
 
@@ -68,7 +68,7 @@ describe('CurrencyCast', function (): void {
         });
 
         test('returns null for non-string value - boolean', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'currencyCode' => true,
             ]);
 
@@ -76,7 +76,7 @@ describe('CurrencyCast', function (): void {
         });
 
         test('returns null for non-string value - object', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'currencyCode' => new stdClass(),
             ]);
 
@@ -86,7 +86,7 @@ describe('CurrencyCast', function (): void {
 
     describe('Edge Cases', function (): void {
         test('returns null for empty string', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'currencyCode' => '',
             ]);
 
@@ -94,7 +94,7 @@ describe('CurrencyCast', function (): void {
         });
 
         test('returns null for string zero', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'currencyCode' => '0',
             ]);
 
@@ -102,7 +102,7 @@ describe('CurrencyCast', function (): void {
         });
 
         test('returns null when property is null', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'currencyCode' => null,
             ]);
 
@@ -110,43 +110,43 @@ describe('CurrencyCast', function (): void {
         });
 
         test('handles lowercase currency code', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'currencyCode' => 'eur',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('handles whitespace-only string', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(CastData::create([
                 'currencyCode' => '   ',
-            ]))->toThrow(MissingResourceException::class);
+            ])->currencyCode)->toBeNull();
         });
 
         test('handles currency code with leading whitespace', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'currencyCode' => ' EUR',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('handles currency code with trailing whitespace', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'currencyCode' => 'EUR ',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('handles numeric string currency code', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'currencyCode' => '123',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('handles special characters', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'currencyCode' => '$$$',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('handles very long string', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'currencyCode' => str_repeat('A', 100),
             ]))->toThrow(MissingResourceException::class);
         });

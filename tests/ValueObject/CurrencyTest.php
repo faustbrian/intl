@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
+use Cline\Intl\Data\Cast\CurrencyCast;
 use Cline\Intl\ValueObjects\Currency;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
+use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
 describe('Currency', function (): void {
@@ -67,12 +67,11 @@ describe('Currency', function (): void {
         });
 
         test('casts string value to Currency via dataCastUsing', function (): void {
-            $cast = Currency::dataCastUsing();
+            $cast = new CurrencyCast();
 
-            $property = Mockery::mock(DataProperty::class);
-            $context = Mockery::mock(CreationContext::class);
+            $property = dummyPropertyMetadata();
 
-            $result = $cast->cast($property, 'CHF', [], $context);
+            $result = $cast->get($property, 'CHF');
 
             expect($result)->toBeInstanceOf(Currency::class);
             expect($result->code)->toEqual('CHF');
@@ -111,12 +110,11 @@ describe('Currency', function (): void {
         });
 
         test('casts string value with special characters', function (): void {
-            $cast = Currency::dataCastUsing();
+            $cast = new CurrencyCast();
 
-            $property = Mockery::mock(DataProperty::class);
-            $context = Mockery::mock(CreationContext::class);
+            $property = dummyPropertyMetadata();
 
-            $result = $cast->cast($property, 'BRL', [], $context);
+            $result = $cast->get($property, 'BRL');
 
             expect($result)->toBeInstanceOf(Currency::class);
             expect($result->code)->toEqual('BRL');

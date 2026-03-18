@@ -21,7 +21,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -39,7 +39,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -56,7 +56,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -73,7 +73,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -92,7 +92,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)->toBeNull();
@@ -106,7 +106,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)->toBeNull();
@@ -120,7 +120,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act & Assert
-            expect(fn (): CastData => CastData::from($data))
+            expect(fn (): CastData => CastData::create($data))
                 ->toThrow(Exception::class);
         });
 
@@ -132,7 +132,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act & Assert
-            expect(fn (): CastData => CastData::from($data))
+            expect(fn (): CastData => CastData::create($data))
                 ->toThrow(Exception::class);
         });
 
@@ -144,7 +144,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act & Assert
-            expect(fn (): CastData => CastData::from($data))
+            expect(fn (): CastData => CastData::create($data))
                 ->toThrow(Exception::class);
         });
     });
@@ -158,7 +158,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -173,7 +173,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -190,7 +190,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -205,7 +205,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -223,7 +223,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -242,7 +242,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -257,7 +257,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -274,7 +274,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -289,7 +289,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)
@@ -306,7 +306,7 @@ describe('PhoneNumberCast', function (): void {
             ];
 
             // Act
-            $actual = CastData::from($data);
+            $actual = CastData::create($data);
 
             // Assert
             expect($actual->phoneNumber)

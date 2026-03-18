@@ -14,7 +14,7 @@ use Tests\Fakes\CastData;
 describe('LanguageCast', function (): void {
     describe('Happy Paths', function (): void {
         test('casts valid 2-letter language code to Language instance', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'languageCode' => 'fi',
             ]);
 
@@ -23,7 +23,7 @@ describe('LanguageCast', function (): void {
         });
 
         test('casts common language codes correctly', function (string $code): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'languageCode' => $code,
             ]);
 
@@ -43,26 +43,26 @@ describe('LanguageCast', function (): void {
 
     describe('Sad Paths', function (): void {
         test('throws exception for invalid language code', function (): void {
-            CastData::from([
+            CastData::create([
                 'languageCode' => 'invalid',
             ]);
         })->throws(MissingResourceException::class);
 
         test('throws exception for non-existent 2-letter code', function (): void {
-            CastData::from([
+            CastData::create([
                 'languageCode' => 'zz',
             ]);
         })->throws(MissingResourceException::class);
 
         test('throws exception for 3-letter language code', function (): void {
             // Symfony Intl only supports ISO 639-1 (2-letter) codes
-            CastData::from([
+            CastData::create([
                 'languageCode' => 'eng',
             ]);
         })->throws(MissingResourceException::class);
 
         test('throws exception for numeric string that is not zero', function (): void {
-            CastData::from([
+            CastData::create([
                 'languageCode' => '123',
             ]);
         })->throws(MissingResourceException::class);
@@ -70,7 +70,7 @@ describe('LanguageCast', function (): void {
 
     describe('Edge Cases', function (): void {
         test('returns null for empty string', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'languageCode' => '',
             ]);
 
@@ -78,7 +78,7 @@ describe('LanguageCast', function (): void {
         });
 
         test('returns null for string zero', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'languageCode' => '0',
             ]);
 
@@ -86,7 +86,7 @@ describe('LanguageCast', function (): void {
         });
 
         test('returns null for null value', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'languageCode' => null,
             ]);
 
@@ -94,7 +94,7 @@ describe('LanguageCast', function (): void {
         });
 
         test('returns null for integer value', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'languageCode' => 123,
             ]);
 
@@ -102,7 +102,7 @@ describe('LanguageCast', function (): void {
         });
 
         test('returns null for boolean true', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'languageCode' => true,
             ]);
 
@@ -110,7 +110,7 @@ describe('LanguageCast', function (): void {
         });
 
         test('returns null for boolean false', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'languageCode' => false,
             ]);
 
@@ -118,7 +118,7 @@ describe('LanguageCast', function (): void {
         });
 
         test('returns null for array value', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'languageCode' => ['fi'],
             ]);
 
@@ -126,7 +126,7 @@ describe('LanguageCast', function (): void {
         });
 
         test('returns null for object value', function (): void {
-            $actual = CastData::from([
+            $actual = CastData::create([
                 'languageCode' => (object) ['code' => 'fi'],
             ]);
 
@@ -134,16 +134,14 @@ describe('LanguageCast', function (): void {
         });
 
         test('throws exception for whitespace-only string', function (): void {
-            // Whitespace-only strings are NOT considered empty by the cast
-            // They will be passed to Language::createFromString and should throw
-            CastData::from([
+            expect(CastData::create([
                 'languageCode' => '   ',
-            ]);
-        })->throws(MissingResourceException::class);
+            ])->languageCode)->toBeNull();
+        });
 
         test('throws exception for uppercase language code', function (): void {
             // Language codes are case-sensitive - must be lowercase
-            CastData::from([
+            CastData::create([
                 'languageCode' => 'FI',
             ]);
         })->throws(MissingResourceException::class);

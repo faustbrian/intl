@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
+use Cline\Intl\Data\Cast\TimeZoneCast;
 use Cline\Intl\ValueObjects\TimeZone;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
+use Cline\Struct\Contracts\CastInterface;
+use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 use Tests\Fakes\CastData;
 
@@ -76,7 +76,7 @@ describe('TimeZone', function (): void {
         });
 
         test('casts valid timezone string to TimeZone object', function (): void {
-            $data = CastData::from([
+            $data = CastData::create([
                 'timeZone' => 'America/Chicago',
             ]);
 
@@ -86,7 +86,7 @@ describe('TimeZone', function (): void {
         });
 
         test('casts Asia/Dubai timezone', function (): void {
-            $data = CastData::from([
+            $data = CastData::create([
                 'timeZone' => 'Asia/Dubai',
             ]);
 
@@ -96,7 +96,7 @@ describe('TimeZone', function (): void {
         });
 
         test('casts Europe/London timezone', function (): void {
-            $data = CastData::from([
+            $data = CastData::create([
                 'timeZone' => 'Europe/London',
             ]);
 
@@ -127,13 +127,13 @@ describe('TimeZone', function (): void {
         });
 
         test('throws exception when casting invalid timezone', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'timeZone' => 'Invalid/TimeZone',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('returns null for non-string value - integer', function (): void {
-            $data = CastData::from([
+            $data = CastData::create([
                 'timeZone' => 12_345,
             ]);
 
@@ -141,7 +141,7 @@ describe('TimeZone', function (): void {
         });
 
         test('returns null for non-string value - array', function (): void {
-            $data = CastData::from([
+            $data = CastData::create([
                 'timeZone' => ['Europe/London'],
             ]);
 
@@ -149,7 +149,7 @@ describe('TimeZone', function (): void {
         });
 
         test('returns null for non-string value - boolean', function (): void {
-            $data = CastData::from([
+            $data = CastData::create([
                 'timeZone' => true,
             ]);
 
@@ -157,7 +157,7 @@ describe('TimeZone', function (): void {
         });
 
         test('returns null for non-string value - object', function (): void {
-            $data = CastData::from([
+            $data = CastData::create([
                 'timeZone' => new stdClass(),
             ]);
 
@@ -167,7 +167,7 @@ describe('TimeZone', function (): void {
 
     describe('Edge Cases', function (): void {
         test('returns null for empty string', function (): void {
-            $data = CastData::from([
+            $data = CastData::create([
                 'timeZone' => '',
             ]);
 
@@ -175,7 +175,7 @@ describe('TimeZone', function (): void {
         });
 
         test('returns null for string zero', function (): void {
-            $data = CastData::from([
+            $data = CastData::create([
                 'timeZone' => '0',
             ]);
 
@@ -183,7 +183,7 @@ describe('TimeZone', function (): void {
         });
 
         test('returns null when property is null', function (): void {
-            $data = CastData::from([
+            $data = CastData::create([
                 'timeZone' => null,
             ]);
 
@@ -212,31 +212,31 @@ describe('TimeZone', function (): void {
         });
 
         test('throws exception for whitespace-only string', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(CastData::create([
                 'timeZone' => '   ',
-            ]))->toThrow(MissingResourceException::class);
+            ])->timeZone)->toBeNull();
         });
 
         test('throws exception for timezone with leading whitespace', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'timeZone' => ' Europe/London',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('throws exception for timezone with trailing whitespace', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'timeZone' => 'Europe/London ',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('throws exception for special characters', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'timeZone' => '@#$%',
             ]))->toThrow(MissingResourceException::class);
         });
 
         test('throws exception for very long string', function (): void {
-            expect(fn (): CastData => CastData::from([
+            expect(fn (): CastData => CastData::create([
                 'timeZone' => str_repeat('A', 100),
             ]))->toThrow(MissingResourceException::class);
         });
@@ -262,17 +262,16 @@ describe('TimeZone', function (): void {
     describe('dataCastUsing method', function (): void {
         describe('Happy Paths', function (): void {
             test('returns Cast instance', function (): void {
-                $cast = TimeZone::dataCastUsing();
+                $cast = new TimeZoneCast();
 
-                expect($cast)->toBeInstanceOf(Cast::class);
+                expect($cast)->toBeInstanceOf(CastInterface::class);
             });
 
             test('cast converts valid timezone string to TimeZone', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                $result = $cast->cast($property, 'Europe/Helsinki', [], $context);
+                $result = $cast->get($property, 'Europe/Helsinki');
 
                 expect($result)
                     ->toBeInstanceOf(TimeZone::class)
@@ -281,11 +280,10 @@ describe('TimeZone', function (): void {
             });
 
             test('cast converts America/New_York timezone', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                $result = $cast->cast($property, 'America/New_York', [], $context);
+                $result = $cast->get($property, 'America/New_York');
 
                 expect($result)
                     ->toBeInstanceOf(TimeZone::class)
@@ -293,11 +291,10 @@ describe('TimeZone', function (): void {
             });
 
             test('cast converts Asia/Tokyo timezone', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                $result = $cast->cast($property, 'Asia/Tokyo', [], $context);
+                $result = $cast->get($property, 'Asia/Tokyo');
 
                 expect($result)
                     ->toBeInstanceOf(TimeZone::class)
@@ -305,11 +302,10 @@ describe('TimeZone', function (): void {
             });
 
             test('cast converts Pacific/Honolulu timezone', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                $result = $cast->cast($property, 'Pacific/Honolulu', [], $context);
+                $result = $cast->get($property, 'Pacific/Honolulu');
 
                 expect($result)
                     ->toBeInstanceOf(TimeZone::class)
@@ -318,119 +314,104 @@ describe('TimeZone', function (): void {
             });
 
             test('cast handles integer by casting to string', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, 12_345, [], $context))
-                    ->toThrow(MissingResourceException::class);
+                expect($cast->get($property, 12_345))->toBeNull();
             });
         });
 
         describe('Sad Paths', function (): void {
             test('cast throws exception for invalid timezone string', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                $cast->cast($property, 'Invalid/TimeZone', [], $context);
+                $cast->get($property, 'Invalid/TimeZone');
             })->throws(MissingResourceException::class);
 
             test('cast throws exception for non-existent timezone', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                $cast->cast($property, 'NotATimeZone', [], $context);
+                $cast->get($property, 'NotATimeZone');
             })->throws(MissingResourceException::class);
 
             test('cast throws exception for lowercase timezone', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                $cast->cast($property, 'europe/london', [], $context);
+                $cast->get($property, 'europe/london');
             })->throws(MissingResourceException::class);
 
             test('cast throws exception for numeric string timezone', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                $cast->cast($property, '12345', [], $context);
+                $cast->get($property, '12345');
             })->throws(MissingResourceException::class);
         });
 
         describe('Edge Cases', function (): void {
             test('cast handles numeric string', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, '999', [], $context))
+                expect(fn (): mixed => $cast->get($property, '999'))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles empty string', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, '', [], $context))
-                    ->toThrow(MissingResourceException::class);
+                expect($cast->get($property, ''))->toBeNull();
             });
 
             test('cast handles whitespace-only string', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, '   ', [], $context))
+                expect(fn (): mixed => $cast->get($property, '   '))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles timezone with leading whitespace', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, ' Europe/London', [], $context))
+                expect(fn (): mixed => $cast->get($property, ' Europe/London'))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles timezone with trailing whitespace', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, 'Europe/London ', [], $context))
+                expect(fn (): mixed => $cast->get($property, 'Europe/London '))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles special characters', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, '@#$%', [], $context))
+                expect(fn (): mixed => $cast->get($property, '@#$%'))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles very long string', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, str_repeat('A', 100), [], $context))
+                expect(fn (): mixed => $cast->get($property, str_repeat('A', 100)))
                     ->toThrow(MissingResourceException::class);
             });
 
             test('cast handles timezone with underscore', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                $result = $cast->cast($property, 'America/Los_Angeles', [], $context);
+                $result = $cast->get($property, 'America/Los_Angeles');
 
                 expect($result)
                     ->toBeInstanceOf(TimeZone::class)
@@ -438,11 +419,10 @@ describe('TimeZone', function (): void {
             });
 
             test('cast handles timezone with multiple path segments', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                $result = $cast->cast($property, 'America/Argentina/Buenos_Aires', [], $context);
+                $result = $cast->get($property, 'America/Argentina/Buenos_Aires');
 
                 expect($result)
                     ->toBeInstanceOf(TimeZone::class)
@@ -450,57 +430,45 @@ describe('TimeZone', function (): void {
             });
 
             test('cast handles boolean true value', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, true, [], $context))
-                    ->toThrow(MissingResourceException::class);
+                expect($cast->get($property, true))->toBeNull();
             });
 
             test('cast handles boolean false value', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, false, [], $context))
-                    ->toThrow(MissingResourceException::class);
+                expect($cast->get($property, false))->toBeNull();
             });
 
             test('cast handles array value', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, ['Europe/London'], [], $context))
-                    ->toThrow(ErrorException::class);
+                expect($cast->get($property, ['Europe/London']))->toBeNull();
             });
 
             test('cast handles object value', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, new stdClass(), [], $context))
-                    ->toThrow(Error::class);
+                expect($cast->get($property, new stdClass()))->toBeNull();
             });
 
             test('cast handles float value', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, 123.45, [], $context))
-                    ->toThrow(MissingResourceException::class);
+                expect($cast->get($property, 123.45))->toBeNull();
             });
 
             test('cast handles null value', function (): void {
-                $cast = TimeZone::dataCastUsing();
-                $property = mock(DataProperty::class);
-                $context = mock(CreationContext::class);
+                $cast = new TimeZoneCast();
+                $property = dummyPropertyMetadata();
 
-                expect(fn (): mixed => $cast->cast($property, null, [], $context))
-                    ->toThrow(MissingResourceException::class);
+                expect($cast->get($property, null))->toBeNull();
             });
         });
     });

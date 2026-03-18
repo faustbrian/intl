@@ -9,29 +9,37 @@
 
 namespace Cline\Intl\Data\Cast;
 
+use Cline\Struct\Contracts\CastInterface;
+use Cline\Struct\Metadata\PropertyMetadata;
 use Cline\Intl\ValueObjects\TimeZone;
-use Override;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
+use Stringable;
 
 use function is_string;
 
 /**
  * @author Brian Faust <brian@cline.sh>
  */
-final class TimeZoneCast implements Cast
+final class TimeZoneCast implements CastInterface
 {
-    /**
-     * @param CreationContext<TimeZone> $context
-     */
-    #[Override()]
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?TimeZone
+    public function get(PropertyMetadata $property, mixed $value): ?TimeZone
     {
+        if ($value instanceof TimeZone) {
+            return $value;
+        }
+
+        if ($value instanceof Stringable) {
+            $value = $value->__toString();
+        }
+
         if (!is_string($value) || ($value === '' || $value === '0')) {
             return null;
         }
 
         return TimeZone::createFromString($value);
+    }
+
+    public function set(PropertyMetadata $property, mixed $value): mixed
+    {
+        return $value;
     }
 }

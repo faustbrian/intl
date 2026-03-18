@@ -9,6 +9,8 @@
 
 namespace Tests\Fakes;
 
+use Cline\Struct\AbstractData;
+use Cline\Struct\Attributes\CastWith;
 use Cline\Intl\Data\Cast\CountryCast;
 use Cline\Intl\Data\Cast\CurrencyCast;
 use Cline\Intl\Data\Cast\LanguageCast;
@@ -24,30 +26,28 @@ use Cline\Intl\ValueObjects\Locale;
 use Cline\Intl\ValueObjects\PhoneNumber;
 use Cline\Intl\ValueObjects\PostalCode;
 use Cline\Intl\ValueObjects\TimeZone;
-use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Data;
 
 /**
  * @author Brian Faust <brian@cline.sh>
  */
-final class CastData extends Data
+final readonly class CastData extends AbstractData
 {
     public function __construct(
-        #[WithCast(CountryCast::class)]
+        #[CastWith(CountryCast::class)]
         public readonly ?Country $countryCode,
-        #[WithCast(CurrencyCast::class)]
+        #[CastWith(CurrencyCast::class)]
         public readonly ?Currency $currencyCode,
-        #[WithCast(LanguageCast::class)]
+        #[CastWith(LanguageCast::class)]
         public readonly ?Language $languageCode,
-        #[WithCast(LocaleCast::class)]
+        #[CastWith(LocaleCast::class)]
         public readonly ?Locale $localeCode,
-        #[WithCast(PhoneNumberCast::class)]
+        #[CastWith(PhoneNumberCast::class)]
         public readonly ?PhoneNumber $phoneNumber,
-        #[WithCast(PostalCodeCast::class)]
+        #[CastWith(PostalCodeCast::class)]
         public readonly ?PostalCode $postalCode,
-        #[WithCast(PostalCodeStringCast::class)]
+        #[CastWith(PostalCodeStringCast::class)]
         public readonly ?string $postalCodeString,
-        #[WithCast(TimeZoneCast::class)]
+        #[CastWith(TimeZoneCast::class)]
         public readonly ?TimeZone $timeZone,
     ) {}
 }

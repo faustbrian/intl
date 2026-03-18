@@ -9,31 +9,47 @@
 
 namespace Cline\Intl\Data\Cast;
 
+use Cline\Struct\Contracts\ContextualCastInterface;
+use Cline\Struct\Metadata\PropertyMetadata;
+use Cline\Struct\Support\PropertyHydrationContext;
 use Cline\Intl\ValueObjects\Country;
 use Cline\Intl\ValueObjects\PhoneNumber;
-use Override;
-use Spatie\LaravelData\Casts\Cast;
-use Spatie\LaravelData\Support\Creation\CreationContext;
-use Spatie\LaravelData\Support\DataProperty;
 
 use function is_string;
 
 /**
  * @author Brian Faust <brian@cline.sh>
  */
-final class PhoneNumberCast implements Cast
+final class PhoneNumberCast implements ContextualCastInterface
 {
+    public function get(PropertyMetadata $property, mixed $value): ?PhoneNumber
+    {
+        return $this->castValue($value, []);
+    }
+
+    public function getWithContext(
+        PropertyMetadata $property,
+        mixed $value,
+        PropertyHydrationContext $context,
+    ): ?PhoneNumber {
+        return $this->castValue($value, $context->resolvedProperties + $context->rawInput);
+    }
+
+    public function set(PropertyMetadata $property, mixed $value): mixed
+    {
+        return $value;
+    }
+
     /**
-     * @param CreationContext<PhoneNumber> $context
+     * @param array<string, mixed> $properties
      */
-    #[Override()]
-    public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?PhoneNumber
+    private function castValue(mixed $value, array $properties): ?PhoneNumber
     {
         if (!is_string($value) || ($value === '' || $value === '0')) {
             return null;
         }
 
-        $countryCode = $properties['countryCode'];
+        $countryCode = $properties['countryCode'] ?? null;
 
         if ($countryCode instanceof Country) {
             $countryCode = $countryCode->toString();
