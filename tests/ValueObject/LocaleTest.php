@@ -9,7 +9,6 @@
 
 use Cline\Intl\Data\Cast\LocaleCast;
 use Cline\Intl\ValueObjects\Locale;
-use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
 describe('Locale', function (): void {

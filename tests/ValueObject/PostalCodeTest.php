@@ -11,7 +11,6 @@ use Brick\Postcode\InvalidPostcodeException;
 use Brick\Postcode\UnknownCountryException;
 use Cline\Intl\Data\Cast\PostalCodeCast;
 use Cline\Intl\ValueObjects\PostalCode;
-use Cline\Struct\Metadata\PropertyMetadata;
 
 describe('PostalCode', function (): void {
     describe('Happy Paths', function (): void {

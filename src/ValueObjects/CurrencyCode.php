@@ -17,12 +17,13 @@ use Symfony\Component\Intl\Exception\MissingResourceException;
 
 /**
  * @author Brian Faust <brian@cline.sh>
+ * @psalm-immutable
  */
 final readonly class CurrencyCode extends AbstractData implements Stringable
 {
     public function __construct(
-        public readonly string $value,
-        public readonly string $localized,
+        public string $value,
+        public string $localized,
     ) {}
 
     #[Override()]

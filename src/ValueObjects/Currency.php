@@ -17,18 +17,19 @@ use Symfony\Component\Intl\Exception\MissingResourceException;
 
 /**
  * @author Brian Faust <brian@cline.sh>
+ * @psalm-immutable
  */
 final readonly class Currency extends AbstractData implements Stringable
 {
     public function __construct(
-        public readonly string $code,
-        public readonly string $name,
-        public readonly string $symbol,
-        public readonly int $fractionDigits,
-        public readonly int $roundingIncrement,
-        public readonly int $cashFractionDigits,
-        public readonly int $cashRoundingIncrement,
-        public readonly ?int $numericCode,
+        public string $code,
+        public string $name,
+        public string $symbol,
+        public int $fractionDigits,
+        public int $roundingIncrement,
+        public int $cashFractionDigits,
+        public int $cashRoundingIncrement,
+        public ?int $numericCode,
     ) {}
 
     #[Override()]

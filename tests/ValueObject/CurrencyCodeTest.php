@@ -10,7 +10,6 @@
 use Cline\Intl\Data\Cast\CurrencyCodeCast;
 use Cline\Intl\ValueObjects\CurrencyCode;
 use Cline\Struct\Contracts\CastInterface;
-use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
 describe('CurrencyCode', function (): void {

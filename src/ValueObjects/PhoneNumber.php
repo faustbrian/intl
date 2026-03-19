@@ -19,24 +19,24 @@ use Override;
 use Stringable;
 
 use function in_array;
-use function strval;
 
 /**
  * @author Brian Faust <brian@cline.sh>
  *
  * @see https://github.com/brick/phonenumber
+ * @psalm-immutable
  */
 final readonly class PhoneNumber extends AbstractData implements JsonSerializable, Stringable
 {
     public function __construct(
-        public readonly Brick $phoneNumber,
-        public readonly string $countryCode,
-        public readonly ?string $geographicalAreaCode,
-        public readonly ?string $nationalNumber,
-        public readonly ?string $regionCode,
-        public readonly ?string $numberType,
-        public readonly bool $isPossible,
-        public readonly bool $isValid,
+        public Brick $phoneNumber,
+        public string $countryCode,
+        public ?string $geographicalAreaCode,
+        public ?string $nationalNumber,
+        public ?string $regionCode,
+        public ?string $numberType,
+        public bool $isPossible,
+        public bool $isValid,
     ) {}
 
     #[Override()]
@@ -54,11 +54,11 @@ final readonly class PhoneNumber extends AbstractData implements JsonSerializabl
 
         return new self(
             phoneNumber: $phoneNumber,
-            countryCode: strval($phoneNumber->getCountryCode()),
+            countryCode: $phoneNumber->getCountryCode(),
             geographicalAreaCode: in_array($phoneNumber->getGeographicalAreaCode(), ['', '0'], true) ? null : $phoneNumber->getGeographicalAreaCode(),
-            nationalNumber: strval($phoneNumber->getNationalNumber()),
+            nationalNumber: $phoneNumber->getNationalNumber(),
             regionCode: in_array($phoneNumber->getRegionCode(), [null, '', '0'], true) ? null : $phoneNumber->getRegionCode(),
-            numberType: strval($phoneNumber->getNumberType()->value),
+            numberType: (string) ($phoneNumber->getNumberType()->value),
             isPossible: $phoneNumber->isPossibleNumber(),
             isValid: $phoneNumber->isValidNumber(),
         );

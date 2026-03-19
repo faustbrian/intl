@@ -18,11 +18,12 @@ use Stringable;
 
 /**
  * @author Brian Faust <brian@cline.sh>
+ * @psalm-immutable
  */
 final readonly class PostalCode extends AbstractData implements Stringable
 {
     public function __construct(
-        public readonly string $postalCode,
+        public string $postalCode,
     ) {}
 
     #[Override()]

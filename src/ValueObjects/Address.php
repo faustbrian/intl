@@ -24,6 +24,7 @@ use Cline\Struct\Attributes\Validate;
  * @author Brian Faust <brian@cline.sh>
  * @see https://en.wikipedia.org/wiki/VCard
  * @see http://www.oasis-open.org/committees/ciq/download.shtml
+ * @psalm-immutable
  */
 final readonly class Address extends AbstractData
 {
@@ -71,26 +72,26 @@ final readonly class Address extends AbstractData
      *                                        Also known as the last name or surname of the person
      */
     public function __construct(
-        public readonly ?CountryCode $countryCode,
-        public readonly ?string $administrativeArea,
-        public readonly string $locality,
-        public readonly ?string $dependentLocality,
-        public readonly ?string $postalCode,
-        public readonly ?string $sortingCode,
-        public readonly ?string $addressLine1,
-        public readonly ?string $addressLine2,
-        public readonly ?string $addressLine3,
-        public readonly ?string $fullName,
-        public readonly ?string $givenName,
-        public readonly ?string $additionalName,
-        public readonly ?string $familyName,
-        public readonly ?string $organization,
-        public readonly ?string $locale,
-        public readonly ?string $phoneNumber,
+        public ?CountryCode $countryCode,
+        public ?string $administrativeArea,
+        public string $locality,
+        public ?string $dependentLocality,
+        public ?string $postalCode,
+        public ?string $sortingCode,
+        public ?string $addressLine1,
+        public ?string $addressLine2,
+        public ?string $addressLine3,
+        public ?string $fullName,
+        public ?string $givenName,
+        public ?string $additionalName,
+        public ?string $familyName,
+        public ?string $organization,
+        public ?string $locale,
+        public ?string $phoneNumber,
         #[Validate('required_if:longitude')]
-        public readonly ?float $latitude,
+        public ?float $latitude,
         #[Validate('required_if:latitude')]
-        public readonly ?float $longitude,
+        public ?float $longitude,
     ) {}
 
     public function isPrivateAddress(): bool

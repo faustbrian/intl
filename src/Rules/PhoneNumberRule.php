@@ -17,6 +17,8 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Arr;
 use Override;
 
+use function is_string;
+
 /**
  * @author Brian Faust <brian@cline.sh>
  */

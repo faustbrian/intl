@@ -17,6 +17,7 @@ use Symfony\Component\Intl\Exception\MissingResourceException;
 
 /**
  * @author Brian Faust <brian@cline.sh>
+ * @psalm-immutable
  */
 final readonly class Country extends AbstractData implements Stringable
 {
@@ -25,9 +26,9 @@ final readonly class Country extends AbstractData implements Stringable
      * @param null|string $alpha3 the return value is an 'ISO 3166-1 alpha-3' compliant country code
      */
     public function __construct(
-        public readonly string $localized,
-        public readonly string $alpha2,
-        public readonly ?string $alpha3,
+        public string $localized,
+        public string $alpha2,
+        public ?string $alpha3,
     ) {}
 
     #[Override()]

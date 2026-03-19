@@ -10,7 +10,6 @@
 use Cline\Intl\Data\Cast\CountryCast;
 use Cline\Intl\ValueObjects\Country;
 use Cline\Struct\Contracts\CastInterface;
-use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
 describe('Country', function (): void {

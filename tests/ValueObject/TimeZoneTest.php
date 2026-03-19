@@ -10,7 +10,6 @@
 use Cline\Intl\Data\Cast\TimeZoneCast;
 use Cline\Intl\ValueObjects\TimeZone;
 use Cline\Struct\Contracts\CastInterface;
-use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 use Tests\Fakes\CastData;
 

@@ -9,7 +9,6 @@
 
 use Cline\Intl\Data\Cast\LanguageCast;
 use Cline\Intl\ValueObjects\Language;
-use Cline\Struct\Metadata\PropertyMetadata;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
 it('creates from valid language code string', function (): void {

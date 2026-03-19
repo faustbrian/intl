@@ -22,7 +22,7 @@ function dummyPropertyMetadata(): PropertyMetadata
         return $property;
     }
 
-    foreach ((new MetadataFactory())->for(PropertyMetadataData::class)->properties as $candidate) {
+    foreach (new MetadataFactory()->for(PropertyMetadataData::class)->properties as $candidate) {
         if ($candidate->name === 'value') {
             return $property = $candidate;
         }

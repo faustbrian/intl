@@ -14,7 +14,6 @@ use Brick\PhoneNumber\PhoneNumberType;
 use Cline\Intl\Data\Cast\PhoneNumberCast;
 use Cline\Intl\ValueObjects\PhoneNumber;
 use Cline\Struct\Contracts\CastInterface;
-use Cline\Struct\Metadata\PropertyMetadata;
 
 it('creates from valid phone number', function (): void {
     $validPhoneNumber = '+35810800515';

@@ -9,8 +9,6 @@
 
 namespace Tests\Fakes;
 
-use Cline\Struct\AbstractData;
-use Cline\Struct\Attributes\CastWith;
 use Cline\Intl\Data\Cast\CountryCast;
 use Cline\Intl\Data\Cast\CurrencyCast;
 use Cline\Intl\Data\Cast\LanguageCast;
@@ -26,28 +24,31 @@ use Cline\Intl\ValueObjects\Locale;
 use Cline\Intl\ValueObjects\PhoneNumber;
 use Cline\Intl\ValueObjects\PostalCode;
 use Cline\Intl\ValueObjects\TimeZone;
+use Cline\Struct\AbstractData;
+use Cline\Struct\Attributes\CastWith;
 
 /**
  * @author Brian Faust <brian@cline.sh>
+ * @psalm-immutable
  */
 final readonly class CastData extends AbstractData
 {
     public function __construct(
         #[CastWith(CountryCast::class)]
-        public readonly ?Country $countryCode,
+        public ?Country $countryCode,
         #[CastWith(CurrencyCast::class)]
-        public readonly ?Currency $currencyCode,
+        public ?Currency $currencyCode,
         #[CastWith(LanguageCast::class)]
-        public readonly ?Language $languageCode,
+        public ?Language $languageCode,
         #[CastWith(LocaleCast::class)]
-        public readonly ?Locale $localeCode,
+        public ?Locale $localeCode,
         #[CastWith(PhoneNumberCast::class)]
-        public readonly ?PhoneNumber $phoneNumber,
+        public ?PhoneNumber $phoneNumber,
         #[CastWith(PostalCodeCast::class)]
-        public readonly ?PostalCode $postalCode,
+        public ?PostalCode $postalCode,
         #[CastWith(PostalCodeStringCast::class)]
-        public readonly ?string $postalCodeString,
+        public ?string $postalCodeString,
         #[CastWith(TimeZoneCast::class)]
-        public readonly ?TimeZone $timeZone,
+        public ?TimeZone $timeZone,
     ) {}
 }
